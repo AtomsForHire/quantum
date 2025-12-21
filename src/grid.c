@@ -8,16 +8,16 @@ struct RGrid {
   int weight_type; //1=trapezoidal rule.
   int nr; //number of grid points.
   double rmax;
-  double grid_r[]; //radial grid is here.
-  double grid_w[]; //integration weights are here.
+  double* grid_r; //radial grid is here.
+  double* grid_w; //integration weights are here.
 };
 
 RGrid* create_rgrid(int grid_type, int weight_type, double rmax) {
   // FOR NOW ASSUME THAT THE grid_type AND weight_type IS ALL 1:
-  double step=0.01; //hard code the step for now, later take from input structure.
+  double step=0.001; //hard code the step for now, later take from input structure.
   int i, j, nr;
-  double temp_r, sum;
-  double int_test[];
+  double tmp_r, sum;
+  double* int_test;
 
   //Calculate the nr based on step and rmax:
   tmp_r=step;
@@ -27,7 +27,10 @@ RGrid* create_rgrid(int grid_type, int weight_type, double rmax) {
     nr++;
   }
 
-  RGrid* RGrid = malloc(sizeof(RGrid) + 2*nr*sizeof(double));
+  //RGrid* RGrid = malloc(sizeof(RGrid) + 2*nr*sizeof(double));
+  RGrid* RGrid = malloc(sizeof(RGrid));
+  RGrid->grid_r = malloc(nr * sizeof(double));
+  RGrid->grid_w = malloc(nr * sizeof(double));
   RGrid->grid_type = grid_type;
   RGrid->weight_type = weight_type;
   RGrid->nr=nr;
@@ -51,15 +54,18 @@ RGrid* create_rgrid(int grid_type, int weight_type, double rmax) {
     int_test[i] =  sin(RGrid->grid_r[i]);
   }
   for (i = 0; i < nr; i++) {
-    sum += int_testf[i] * RGrid->grid_w[i];
+    sum += int_test[i] * RGrid->grid_w[i];
   }
   free(int_test);
 
-  printf("INT_TEST: %f, %f", sum, cos(0)-cos(rmax))
+  printf("INT_TEST: %f, %f", sum, cos(0)-cos(rmax));
+  fflush(stdout);
   
   return RGrid;
 }
 
-void destroy_rgrid(RGrid* inGrid) {
-    free(inGrid);
+void destroy_rgrid(RGrid* in_grid) {
+    free(in_grid->grid_r);
+    free(in_grid->grid_w);
+    free(in_grid);
 }
