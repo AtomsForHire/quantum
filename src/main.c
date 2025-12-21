@@ -12,6 +12,7 @@ int main(int argc, char *argv[]) {
 
   Input *input;
   input = input_read_input_file(argv[1], &status);
+  printf("Settings: %d %f\n", input->basis_type, input->alpha);
 
   // Haadi adding first: see if the radial grid is working:
   RGrid *RGrid = create_rgrid(1, 1, 10.0);
