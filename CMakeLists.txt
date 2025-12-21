@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.12)
 project(ccc C)
 
-add_executable(ccc src/main.c src/grid/grid.c src/input/input.c)
+add_executable(ccc src/main.c src/grid/grid.c src/input/input.c src/input/toml.c)
 
 # Find LAPACK library
 set(BLA_VENDOR "Generic")

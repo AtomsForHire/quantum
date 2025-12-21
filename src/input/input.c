@@ -1,6 +1,6 @@
 #include "input.h"
-#include "toml.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 struct Input {
@@ -16,6 +16,28 @@ struct Input {
   double r_max;
   double step;
 };
+
+int get_int_or_fail(toml_table_t *tbl, const char *key, int *target) {
+  toml_value_t d = toml_table_int(tbl, key);
+  if (!d.ok) {
+    fprintf(stderr, "ERROR: Config key '%s' is missing or not an integer\n",
+            key);
+    return -1; // Failure
+  }
+  *target = (int)d.u.i;
+  return 0; // Success
+}
+
+int get_double_or_fail(toml_table_t *tbl, const char *key, double *target) {
+  toml_value_t d = toml_table_double(tbl, key);
+  if (!d.ok) {
+    fprintf(stderr, "ERROR: Config key '%s' is missing or not an integer\n",
+            key);
+    return -1; // Failure
+  }
+  *target = (int)d.u.d;
+  return 0; // Success
+}
 
 Input *input_read_input_file(char *filename, int *status) {
   Input *input = malloc(sizeof(Input));
@@ -40,19 +62,14 @@ Input *input_read_input_file(char *filename, int *status) {
   // Get grid table
   toml_table_t *grid_tbl = toml_table_table(tbl, "grid");
   if (grid_tbl) {
-    // Loop over all keys in a table.
-    int l = toml_table_len(grid_tbl);
-    for (int i = 0; i < l; i++) {
-      int keylen;
-      const char *key = toml_table_key(grid_tbl, i, &keylen);
-      printf("key #%d: %s\n", i, key);
-      // TODO: this should return toml_key_t or something, which also
-      // includes the type. This actually requires a bit of frobbing with
-      // the lexer, as that just sets the type of everything to STRING.
-      //
-      // Then we can also get rid of toml_table_{string,int,...} and just
-      // parse it automatically.
-    }
+    if (get_int_or_fail(tbl, "basis_type", &input->basis_type) != 0)
+      goto cleanup;
+    if (get_int_or_fail(tbl, "l_max", &input->l_max) != 0)
+      goto cleanup;
+    if (get_int_or_fail(tbl, "n_basis", &input->n_basis) != 0)
+      goto cleanup;
+    if (get_double_or_fail(tbl, "alpha", &input->alpha) != 0)
+      goto cleanup;
   } else {
     fprintf(stderr, "ERROR: something is wrong with the 'grid' table\n");
     *status = 1;
@@ -61,19 +78,14 @@ Input *input_read_input_file(char *filename, int *status) {
 
   toml_table_t *basis_tbl = toml_table_table(tbl, "basis");
   if (basis_tbl) {
-    // Loop over all keys in a table.
-    int l = toml_table_len(grid_tbl);
-    for (int i = 0; i < l; i++) {
-      int keylen;
-      const char *key = toml_table_key(grid_tbl, i, &keylen);
-      printf("key #%d: %s\n", i, key);
-      // TODO: this should return toml_key_t or something, which also
-      // includes the type. This actually requires a bit of frobbing with
-      // the lexer, as that just sets the type of everything to STRING.
-      //
-      // Then we can also get rid of toml_table_{string,int,...} and just
-      // parse it automatically.
-    }
+    if (get_int_or_fail(tbl, "grid_type", &input->grid_type) != 0)
+      goto cleanup;
+    if (get_int_or_fail(tbl, "weight_type", &input->weight_type) != 0)
+      goto cleanup;
+    if (get_double_or_fail(tbl, "r_max", &input->r_max) != 0)
+      goto cleanup;
+    if (get_double_or_fail(tbl, "step", &input->step) != 0)
+      goto cleanup;
   } else {
     fprintf(stderr, "ERROR: Something is wrong with the 'basis' table\n");
     *status = 1;
@@ -85,7 +97,7 @@ Input *input_read_input_file(char *filename, int *status) {
   toml_free(tbl);
   return input;
 
-  // Error
+// Error
 cleanup:
   if (tbl)
     toml_free(tbl);

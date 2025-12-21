@@ -1,5 +1,5 @@
 [grid]
-basis_type = 0
+basis_type = 1
 l_max = 2
 n_basis = 10
 alpha = 1.0
