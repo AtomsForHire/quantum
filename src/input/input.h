@@ -3,6 +3,6 @@
 
 typedef struct Input Input;
 
-Input read_input_file(char *filename, int *status);
+Input *input_read_input_file(char *filename, int *status);
 
 #endif // !INPUT_H
