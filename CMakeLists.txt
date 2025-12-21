@@ -18,6 +18,10 @@ endif()
 
 if(NOT LAPACKE_INCLUDE_DIR OR NOT LAPACKE_LIBRARY)
     message(FATAL_ERROR "Could not find LAPACKE")
+else()
+    message(STATUS "INFO: Found lapacke in ${LAPACKE_INCLUDE_DIR} and ${LAPACKE_LIBRARY}")
+    target_include_directories(ccc PRIVATE ${LAPACKE_INCLUDE_DIR})
+    target_link_libraries(ccc PRIVATE ${LAPACKE_LIBRARY} ${LAPACK_LIBRARIES})
 endif()
 
 get_filename_component(dirname ${CMAKE_BINARY_DIR} NAME)
