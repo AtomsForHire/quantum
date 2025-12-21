@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.12)
 project(ccc C)
 
-add_executable(ccc ./src/main.c)
+add_executable(ccc src/main.c src/grid.c)
 
 # Find LAPACK library
 set(BLA_VENDOR "Generic")
@@ -23,6 +23,8 @@ else()
     target_include_directories(ccc PRIVATE ${LAPACKE_INCLUDE_DIR})
     target_link_libraries(ccc PRIVATE ${LAPACKE_LIBRARY} ${LAPACK_LIBRARIES})
 endif()
+
+target_include_directories(ccc PRIVATE "src/grid.h")
 
 get_filename_component(dirname ${CMAKE_BINARY_DIR} NAME)
 if (${dirname} MATCHES "dbg" OR ${dirname} MATCHES "debug")
