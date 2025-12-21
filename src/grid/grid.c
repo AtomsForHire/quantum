@@ -29,40 +29,41 @@ RGrid *create_rgrid(int grid_type, int weight_type, double rmax) {
   }
 
   // RGrid* RGrid = malloc(sizeof(RGrid) + 2*nr*sizeof(double));
-  RGrid *RGrid = malloc(sizeof(RGrid));
-  RGrid->grid_r = malloc(nr * sizeof(double));
-  RGrid->grid_w = malloc(nr * sizeof(double));
-  RGrid->grid_type = grid_type;
-  RGrid->weight_type = weight_type;
-  RGrid->nr = nr;
-  RGrid->rmax = rmax;
+  RGrid *r_grid = malloc(sizeof(RGrid));
+  r_grid->grid_r = malloc(nr * sizeof(double));
+  r_grid->grid_w = malloc(nr * sizeof(double));
+  r_grid->grid_type = grid_type;
+  r_grid->weight_type = weight_type;
+  r_grid->nr = nr;
+  r_grid->rmax = rmax;
 
   // Make the grid first:
   for (i = 0; i < nr; i++) {
-    RGrid->grid_r[i] = (double)(i + 1) * step;
+    r_grid->grid_r[i] = (double)(i + 1) * step;
   }
 
   // Make the weights next:
-  RGrid->grid_w[0] = 0.5 * (RGrid->grid_r[1] - RGrid->grid_r[0]);
-  RGrid->grid_w[nr - 1] = 0.5 * (RGrid->grid_r[nr - 1] - RGrid->grid_r[nr - 2]);
+  r_grid->grid_w[0] = 0.5 * (r_grid->grid_r[1] - r_grid->grid_r[0]);
+  r_grid->grid_w[nr - 1] =
+      0.5 * (r_grid->grid_r[nr - 1] - r_grid->grid_r[nr - 2]);
   for (i = 1; i < nr - 1; i++) {
-    RGrid->grid_w[i] = 0.5 * (RGrid->grid_r[i + 1] - RGrid->grid_r[i - 1]);
+    r_grid->grid_w[i] = 0.5 * (r_grid->grid_r[i + 1] - r_grid->grid_r[i - 1]);
   }
 
   // Test the radial grid by doing an integral test:
   int_test = malloc(nr * sizeof(double));
   for (i = 0; i < nr; i++) {
-    int_test[i] = sin(RGrid->grid_r[i]);
+    int_test[i] = sin(r_grid->grid_r[i]);
   }
   for (i = 0; i < nr; i++) {
-    sum += int_test[i] * RGrid->grid_w[i];
+    sum += int_test[i] * r_grid->grid_w[i];
   }
   free(int_test);
 
   printf("INT_TEST: %f, %f", sum, cos(0) - cos(rmax));
   fflush(stdout);
 
-  return RGrid;
+  return r_grid;
 }
 
 void destroy_rgrid(RGrid *in_grid) {
