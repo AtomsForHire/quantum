@@ -7,8 +7,7 @@
 typedef struct RGrid RGrid;
 
 // Constructor / destructor
-RGrid* create_rgrid(int grid_type, int weight_type, double rmax);
-void destroy_rgrid(RGrid* in_grid);
+RGrid *create_rgrid(int grid_type, int weight_type, double rmax);
+void destroy_rgrid(RGrid *in_grid);
 
 #endif
-
