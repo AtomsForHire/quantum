@@ -13,12 +13,12 @@ int main(int argc, char *argv[]) {
 
   Input *input;
   input = input_read_input_file(argv[1], &status);
-  printf("Settings: %d %f\n", input->basis_type, input->alpha);
+  printf("Settings: %f\n", input->step);
 
   // Haadi adding first: see if the radial grid is working:
-  RGrid *RGrid = create_rgrid(1, 1, 10.0);
-  destroy_rgrid(RGrid);
+  RGrid *r_grid = create_rgrid(input);
 
+  destroy_rgrid(r_grid);
   if (input)
     free(input);
 
