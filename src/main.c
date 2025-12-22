@@ -1,3 +1,4 @@
+#include "basis/basis.h"
 #include "grid/grid.h"
 #include "input/input.h"
 #include <stdio.h>
@@ -20,5 +21,6 @@ int main(int argc, char *argv[]) {
 
   if (input)
     free(input);
+
   return EXIT_SUCCESS;
 }
