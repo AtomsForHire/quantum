@@ -20,7 +20,6 @@ int main(int argc, char *argv[]) {
 
   printf("Settings: %f\n", input->step);
 
-  // Haadi adding first: see if the radial grid is working:
   RGrid *r_grid = create_rgrid(input);
 
   destroy_rgrid(r_grid);
