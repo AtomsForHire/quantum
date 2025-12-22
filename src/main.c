@@ -11,6 +11,7 @@ int main(int argc, char *argv[]) {
     return EXIT_FAILURE;
   }
 
+  // Handle input
   Input *input;
   input = input_read_input_file(argv[1], &status);
   if (status != 0) {
@@ -18,7 +19,7 @@ int main(int argc, char *argv[]) {
     return EXIT_FAILURE;
   }
 
-  printf("Settings: %f\n", input->step);
+  input_pretty_print(input);
 
   RGrid *r_grid = create_rgrid(input);
 
