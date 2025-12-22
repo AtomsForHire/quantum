@@ -1,11 +1,11 @@
-[grid]
+[basis]
 basis_type = 1
 l_max = 2
 n_basis = 10
 alpha = 1.0
 
-[basis]
+[grid]
 grid_type = 1
 weight_type = 1
-r_max = 10
-step = 0.1
+r_max = 10.0
+step = 0.01
