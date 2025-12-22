@@ -12,10 +12,18 @@ struct RGrid {
   double *grid_w; // integration weights are here.
 };
 
-RGrid *create_rgrid(int grid_type, int weight_type, double rmax) {
+RGrid *create_rgrid(Input *input) {
+  printf("LMAO\n");
+  fflush(stdout);
   // FOR NOW ASSUME THAT THE grid_type AND weight_type IS ALL 1:
-  double step =
-      0.001; // hard code the step for now, later take from input structure.
+  double step = input->step;
+  double rmax = input->r_max;
+  int grid_type = input->grid_type;
+  int weight_type = input->weight_type;
+
+  printf("LMAO %f %f\n", rmax, step);
+  fflush(stdout);
+
   int i, j, nr;
   double tmp_r, sum;
   double *int_test;
@@ -27,6 +35,9 @@ RGrid *create_rgrid(int grid_type, int weight_type, double rmax) {
     tmp_r = tmp_r + step;
     nr++;
   }
+
+  printf("LMAO\n");
+  fflush(stdout);
 
   // RGrid* RGrid = malloc(sizeof(RGrid) + 2*nr*sizeof(double));
   RGrid *r_grid = malloc(sizeof(RGrid));
@@ -42,6 +53,9 @@ RGrid *create_rgrid(int grid_type, int weight_type, double rmax) {
     r_grid->grid_r[i] = (double)(i + 1) * step;
   }
 
+  printf("LMAO\n");
+  fflush(stdout);
+
   // Make the weights next:
   r_grid->grid_w[0] = 0.5 * (r_grid->grid_r[1] - r_grid->grid_r[0]);
   r_grid->grid_w[nr - 1] =
@@ -49,6 +63,9 @@ RGrid *create_rgrid(int grid_type, int weight_type, double rmax) {
   for (i = 1; i < nr - 1; i++) {
     r_grid->grid_w[i] = 0.5 * (r_grid->grid_r[i + 1] - r_grid->grid_r[i - 1]);
   }
+
+  printf("LMAO\n");
+  fflush(stdout);
 
   // Test the radial grid by doing an integral test:
   int_test = malloc(nr * sizeof(double));
