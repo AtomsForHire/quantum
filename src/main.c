@@ -13,6 +13,11 @@ int main(int argc, char *argv[]) {
 
   Input *input;
   input = input_read_input_file(argv[1], &status);
+  if (status != 0) {
+    fprintf(stderr, "ERROR: Something went wrong in reading the input file\n");
+    return EXIT_FAILURE;
+  }
+
   printf("Settings: %f\n", input->step);
 
   // Haadi adding first: see if the radial grid is working:
