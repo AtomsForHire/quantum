@@ -82,3 +82,16 @@ cleanup:
 
   return NULL;
 }
+
+void input_pretty_print(Input *input) {
+  printf("BASIS SETTINGS:\n");
+  printf("    basis_type: %d\n", input->basis_type);
+  printf("    l_max: %d\n", input->l_max);
+  printf("    n_basis: %d\n", input->n_basis);
+  printf("    alpha: %f\n", input->alpha);
+  printf("RADIAL GRID SETTINGS:\n");
+  printf("    grid_type: %d\n", input->grid_type);
+  printf("    weight_type: %d\n", input->weight_type);
+  printf("    r_max: %f\n", input->r_max);
+  printf("    step: %f\n", input->step);
+}
