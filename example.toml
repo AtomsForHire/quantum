@@ -5,7 +5,7 @@ n_basis = 10
 alpha = 1.0
 
 [basis]
-grid_type = 0
-weight_type = 0
+grid_type = 1
+weight_type = 1
 r_max = 10
 step = 0.1
