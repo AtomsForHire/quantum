@@ -18,6 +18,7 @@ struct Basis {
   BasisFn *funs;  // the basis functions themselves.
 };
 
+// k goes up to n_basis
 double *basis_gen_indiv_lag(int k, int alpha, int len_grid, double *grid);
 
 #endif // BASIS_H

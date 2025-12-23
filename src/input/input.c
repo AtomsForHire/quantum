@@ -1,5 +1,6 @@
 #include "input.h"
 #include "toml.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -26,6 +27,28 @@ int get_double_or_fail(toml_datum_t tbl, const char *key, double *target) {
   return 0; // Success
 }
 
+int get_bool_or_default(toml_datum_t tbl, const char *key, bool *target,
+                        bool default_val) {
+  toml_datum_t d = toml_seek(tbl, key);
+
+  if (d.type == TOML_UNKNOWN) {
+    fprintf(stdout,
+            "WARNING: key %s is not explicity set, setting to default value of "
+            "%d\n",
+            key, default_val);
+    *target = false;
+    return 0;
+  } else {
+    if (d.type != TOML_BOOLEAN) {
+      fprintf(stderr, "ERROR: Config key '%s' is not a boolean\n", key);
+      return -1; // Failure
+    }
+  }
+
+  *target = d.u.boolean;
+  return 0; // Success
+}
+
 Input *input_read_input_file(char *filename, int *status) {
   Input *input = malloc(sizeof(Input));
 
@@ -44,6 +67,9 @@ Input *input_read_input_file(char *filename, int *status) {
     *status = 1;
     goto cleanup;
   }
+
+  // Get debug
+  get_bool_or_default(tbl.toptab, "debug", &input->debug, false);
 
   // Get grid table
   // toml_table_t *grid_tbl = toml_table_table(tbl, "grid");
@@ -84,6 +110,7 @@ cleanup:
 }
 
 void input_pretty_print(Input *input) {
+  printf("DEBUG MODE: %d\n", input->debug);
   printf("BASIS SETTINGS:\n");
   printf("    basis_type: %d\n", input->basis_type);
   printf("    l_max: %d\n", input->l_max);

@@ -1,10 +1,13 @@
 #ifndef INPUT_H
 #define INPUT_H
 #include "toml.h"
+#include <stdbool.h>
 
 typedef struct Input Input;
 
 struct Input {
+  bool debug;
+
   // Basis parameters
   int basis_type;
   int l_max;
@@ -20,6 +23,9 @@ struct Input {
 
 int get_int_or_fail(toml_datum_t tbl, const char *key, int *target);
 int get_double_or_fail(toml_datum_t tbl, const char *key, double *target);
+int get_bool_or_default(toml_datum_t tbl, const char *key, bool *target,
+                        bool default_val);
+
 Input *input_read_input_file(char *filename, int *status);
 void input_pretty_print(Input *input);
 

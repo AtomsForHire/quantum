@@ -23,6 +23,33 @@ int main(int argc, char *argv[]) {
 
   RGrid *r_grid = create_rgrid(input);
 
+  // Test laguerre
+  if (input->debug) {
+    int nr = r_grid->nr;
+    int n_basis = input->n_basis;
+    double (*temp)[n_basis] = malloc(nr * sizeof(*temp));
+
+    for (int k = 0; k < input->n_basis; k++) {
+      double *temp2 =
+          basis_gen_indiv_lag(k, input->alpha, r_grid->nr, r_grid->grid_r);
+      for (int i = 0; i < nr; i++) {
+        temp[i][k] = temp2[i];
+      }
+      free(temp2);
+    }
+
+    FILE *fptr = fopen("lag.txt", "w");
+    for (int i = 0; i < nr; i++) {
+      for (int k = 0; k < input->n_basis; k++) {
+        fprintf(fptr, "%f ", temp[i][k]);
+      }
+      fprintf(fptr, "\n");
+    }
+
+    fclose(fptr);
+    free(temp);
+  }
+
   destroy_rgrid(r_grid);
   if (input)
     free(input);

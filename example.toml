@@ -1,3 +1,5 @@
+debug = true
+
 [basis]
 basis_type = 1
 l_max = 2

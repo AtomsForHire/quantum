@@ -9,11 +9,11 @@ double *basis_gen_indiv_lag(int k_max, int alpha, int len, double *grid) {
   double *temp_n_1 = (double *)malloc(len * sizeof(double));
 
   // Initialise
-  for (int i; i < len; i++) {
+  for (int i = 0; i < len; i++) {
     temp_n[i] = 1.0;
   }
 
-  for (int i; i < len; i++) {
+  for (int i = 0; i < len; i++) {
     temp_n_1[i] = 1 + (double)alpha - grid[i];
   }
 
@@ -28,9 +28,9 @@ double *basis_gen_indiv_lag(int k_max, int alpha, int len, double *grid) {
   } else {
     // Loop over k's
     for (int k = 2; k <= k_max; k++) {
+      double k_d = (double)k;
       // Loop over grid
       for (int j = 0; j < len; j++) {
-        double k_d = (double)k;
         double a_d = (double)alpha;
         lag[j] = ((2.0 * (k_d - 1.0 + a_d - grid[j])) * temp_n_1[j] -
                   (k_d - 1.0 + a_d) * temp_n[j]) /

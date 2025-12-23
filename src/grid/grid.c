@@ -2,15 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct RGrid {
-  int grid_type;   // 1=evenly spaced radial grid
-  int weight_type; // 1=trapezoidal rule.
-  int nr;          // number of grid points.
-  double rmax;
-  double *grid_r; // radial grid is here.
-  double *grid_w; // integration weights are here.
-};
-
 RGrid *create_rgrid(Input *input) {
   // FOR NOW ASSUME THAT THE grid_type AND weight_type IS ALL 1:
   double step = input->step;
