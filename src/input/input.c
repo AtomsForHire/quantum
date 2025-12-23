@@ -110,6 +110,7 @@ cleanup:
 }
 
 void input_pretty_print(Input *input) {
+  printf("DEBUG MODE: %d\n", input->debug);
   printf("BASIS SETTINGS:\n");
   printf("    basis_type: %d\n", input->basis_type);
   printf("    l_max: %d\n", input->l_max);
