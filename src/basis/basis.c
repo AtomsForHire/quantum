@@ -11,9 +11,6 @@ double *basis_gen_indiv_lag(int k_max, int alpha, int len, double *grid) {
   // Initialise
   for (int i = 0; i < len; i++) {
     temp_n[i] = 1.0;
-  }
-
-  for (int i = 0; i < len; i++) {
     temp_n_1[i] = 1 + (double)alpha - grid[i];
   }
 
