@@ -23,15 +23,20 @@ double *basis_gen_indiv_lag(int k_max, int alpha, int len, double *grid) {
       lag[i] = temp_n_1[i];
     }
   } else {
+    double a_d = (double)alpha;
     // Loop over k's
     for (int k = 2; k <= k_max; k++) {
       double k_d = (double)k;
+      double denom = 1.0 / (k_d + 1.0);
+      double common_term = k_d - 1.0 + a_d;
       // Loop over grid
       for (int j = 0; j < len; j++) {
-        double a_d = (double)alpha;
-        lag[j] = ((2.0 * (k_d - 1.0 + a_d - grid[j])) * temp_n_1[j] -
-                  (k_d - 1.0 + a_d) * temp_n[j]) /
-                 (k_d + 1.0);
+        // lag[j] = ((2.0 * (k_d - 1.0 + a_d - grid[j])) * temp_n_1[j] -
+        //           (k_d - 1.0 + a_d) * temp_n[j]) /
+        //          (k_d + 1.0);
+        lag[j] = ((2.0 * (common_term - grid[j])) * temp_n_1[j] -
+                  (common_term * temp_n[j])) *
+                 denom;
       }
 
       // Update temp arrays
