@@ -45,5 +45,7 @@ double *basis_gen_indiv_lag(int k_max, int alpha, int len, double *grid) {
     }
   }
 
+  free(temp_n_1);
+  free(temp_n);
   return lag;
 }
